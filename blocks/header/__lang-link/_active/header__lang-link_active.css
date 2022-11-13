@@ -1,9 +1,0 @@
-.header__lang-link_active::after {
-	content: ' ';
-	height: 2px;
-	width: 100%;
-	background-color: #ffffff;
-	position: absolute;
-	left: 1px;
-	bottom: 0;
-}
