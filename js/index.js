@@ -85,7 +85,7 @@ const handleLikeElement = (evt) => {
 
 const popupPhotoElement = document.querySelector('.popup_type_photo');
 const popupPhotoCloseButton = document.querySelector('.popup__close-btn_type_photo');
-const popupPhotoTitle = document.querySelector('.popup__title_type_photo');
+const popupPhotoTitle = document.querySelector('.popup__text');
 const popupPhotoImage = document.querySelector('.popup__image');
 const closeImagePopup = function () {
   popupPhotoElement.classList.remove('popup_opened');
