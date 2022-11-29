@@ -59,10 +59,10 @@ popupPlaceCloseButton.addEventListener('click', closePlacePopup);
 // Дом узлы
 
 const elementContainer = document.querySelector('.elements');
-const placeForm = document.querySelector('.popup-place__form');
+const placeForm = document.querySelector('.popup__form_type_place');
 const titleInput = document.querySelector('.popup__input-text_type_title');
 const urlPlaceImageInput = document.querySelector('.popup__input-text_type_url')
-const placeSubmitButton = document.querySelector('.popup-place__submit-btn');
+const placeSubmitButton = document.querySelector('.popup__submit-btn_type_place');
 
 // Шаблоны
 
@@ -84,7 +84,7 @@ const handleLikeElement = (evt) => {
 // CONSTANTS попап фото-карточки
 
 const popupPhotoElement = document.querySelector('.popup_type_photo');
-const popupPhotoCloseButton = document.querySelector('.popup-photo__close-btn');
+const popupPhotoCloseButton = document.querySelector('.popup__close-btn_type_photo');
 const popupPhotoTitle = document.querySelector('.popup__title_type_photo');
 const popupPhotoImage = document.querySelector('.popup__image');
 const closeImagePopup = function () {
