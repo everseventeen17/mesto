@@ -19,12 +19,12 @@
         <div class="profile__info">
           <div class="profile__name-wrapper">
             <h1 class="profile__name">Жак-Ив Кусто</h1>
-            <button type="button" class="profile__edit-button"></button>
+            <button type="button" aria-label="Редактировать профиль" class="profile__edit-button"></button>
           </div>
           <p class="profile__job">Исследователь океана</p>
         </div>
       </div>
-      <button type="button" class="profile__add-button"></button>
+      <button type="button" aria-label="Добавить карточку" class="profile__add-button"></button>
     </section>
     <section class="elements">
 
@@ -36,12 +36,12 @@
 
   <div class="popup popup_type_profile">
     <div class="popup__container">
-      <button type="button" class="popup__close-btn"></button>
+      <button type="button" aria-label="Закрыть" class="popup__close-btn"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
-      <form name="profileForm" method="get" class="popup__form">
-        <input name="profileName" type="text" placeholder="Имя" class="popup__input-text popup__input-text_type_name">
+      <form name="profileForm" method="post" class="popup__form">
+        <input name="profileName" type="text" placeholder="Имя" class="popup__input-text popup__input-text_type_name" required>
         <input name="profileUserAbout" type="text" placeholder="О себе"
-          class="popup__input-text popup__input-text_type_job">
+          class="popup__input-text popup__input-text_type_job" required>
         <button type="submit" class="popup__submit-btn">Сохранить</button>
       </form>
     </div>
@@ -49,13 +49,13 @@
 
   <div class="popup popup_type_place">
     <div class="popup__container">
-      <button type="button" class="popup__close-btn popup__close-btn_type_place"></button>
+      <button type="button" aria-label="Закрыть" class="popup__close-btn popup__close-btn_type_place"></button>
       <h2 class="popup__title">Новое место</h2>
-      <form name="placeForm" method="get" class="popup__form popup__form_type_place">
+      <form name="placeForm" method="post" class="popup__form popup__form_type_place">
         <input name="placeName" type="text" placeholder="Название"
-          class="popup__input-text popup__input-text_type_title">
+          class="popup__input-text popup__input-text_type_title" required>
         <input name="placeUrl" type="url" placeholder="Ссылка на картинку"
-          class="popup__input-text popup__input-text_type_url">
+          class="popup__input-text popup__input-text_type_url" required>
         <button type="submit" class="popup__submit-btn popup__submit-btn_type_place">Создать</button>
       </form>
     </div>
@@ -63,19 +63,19 @@
 
   <div class="popup popup_type_photo">
     <div class="popup__container popup__container_type_photo">
-      <button type="button" class="popup__close-btn popup__close-btn_type_photo"></button>
-      <img class="popup__image" src="./images/main/element/1.jpg" alt="Картинка">
-      <h3 class="popup__text">Текст</h3>
+      <button type="button" aria-label="Закрыть" class="popup__close-btn popup__close-btn_type_photo"></button>
+      <img class="popup__image" src="#" alt="Картинка">
+      <h3 class="popup__text"></h3>
     </div>
   </div>
 
   <template id="element-template" class="template">
     <li class="element">
-      <button type="button" class="element__delete-button"></button>
+      <button type="button" aria-label="Удалить" class="element__delete-button"></button>
       <img src="./images/main/element/1.jpg" alt="Картинка" class="element__img">
       <div class="element__rectangle">
         <h2 class="element__title"></h2>
-        <button type="button" class="element__btn-like"></button>
+        <button type="button" aria-label="Оценить" class="element__btn-like"></button>
       </div>
     </li>
   </template>
