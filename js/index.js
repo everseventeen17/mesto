@@ -2,12 +2,16 @@ import elementList from './cards.js';
 
 // функции открытия, закрытия попапов
 
-function openPopup(popupSelector) {
-  popupSelector.classList.add('popup_opened');
+function openPopup(popupElement) {
+  popupElement.classList.add('popup_opened');
+  document.addEventListener('keydown', handlePressOnEsc);
+  popupElement.addEventListener('mousedown', handlePressOnOverlay);
 }
 
-function closePopup(popupSelector) {
-  popupSelector.classList.remove('popup_opened');
+function closePopup(popupElement) {
+  popupElement.classList.remove('popup_opened');
+  document.removeEventListener('keydown', handlePressOnEsc);
+
 }
 
 const popupCloseButtons = document.querySelectorAll('.popup__close-btn');
@@ -18,7 +22,26 @@ popupCloseButtons.forEach((popupCloseButton) =>
   })
 );
 
+
+// функции открытия, закрытия попапов по нажатии ESC, overlay
+
+function handlePressOnEsc(evt) {
+  const popupOpened = document.querySelector('.popup_opened');
+  if (evt.key === 'Escape') {
+    closePopup(popupOpened);
+  };
+};
+
+function handlePressOnOverlay(evt) {
+  if (evt.target.classList.contains('popup_opened')) {
+    closePopup(evt.target);
+  };
+};
+
+
+
 // constants попап, формы profile
+
 
 const popupProfileElement = document.querySelector('.popup_type_profile');
 const popupProfileOpenButton = document.querySelector('.profile__edit-button');
@@ -30,7 +53,7 @@ const jobProfile = document.querySelector('.profile__job');
 
 // функция открытия, попап profile
 
-function openProfilePopup () {
+function openProfilePopup() {
   openPopup(popupProfileElement);
   popupProfileNameInput.value = nameProfile.textContent;
   popupProfileJobInput.value = jobProfile.textContent;
@@ -38,7 +61,7 @@ function openProfilePopup () {
 
 // функция замены данных profile
 
-function replaceTitle (event) {
+function replaceTitle(event) {
   event.preventDefault();
   nameProfile.textContent = popupProfileNameInput.value;
   jobProfile.textContent = popupProfileJobInput.value;
@@ -60,6 +83,8 @@ const popupPlaceUrlInput = popupPlaceElement.querySelector('.popup__input-text_t
 
 function openPlacePopup() {
   openPopup(popupPlaceElement);
+  popupPlaceTitleInput.value = '';
+  popupPlaceUrlInput.value = '';
 }
 
 popupPlaceOpenButton.addEventListener('click', openPlacePopup);
@@ -105,7 +130,7 @@ const generateElement = (dataCard) => {
   likeButton.addEventListener('click', handleLikeElement);
   const openButtonImage = newElement.querySelector('.element__img');
   const openImagePopup = function () {
-    popupPhotoElement.classList.add('popup_opened');
+    openPopup(popupPhotoElement);
     popupPhotoImage.src = placeImage.src;
     popupPhotoTitle.textContent = placeTitle.textContent;
     popupPhotoImage.alt = placeTitle.textContent;
@@ -140,3 +165,15 @@ const handleAddCard = (event) => {
 }
 
 popupPlaceForm.addEventListener('submit', handleAddCard);
+
+
+
+
+
+
+
+
+
+
+
+
