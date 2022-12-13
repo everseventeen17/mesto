@@ -18,7 +18,7 @@ const showInputError = (formElement, inputElement, errorMessage, validationConfi
 
 // Убрать сообщение об ошибке
 
-export const hideInputError = (formElement, inputElement, validationConfig) => {
+const hideInputError = (formElement, inputElement, validationConfig) => {
   const errorElement = formElement.querySelector(`.popup__error_${inputElement.name}`);
   inputElement.classList.remove(validationConfig.inputErrorClass);
   errorElement.classList.remove(validationConfig.errorClass);
