@@ -1,4 +1,7 @@
 import elementList from './cards.js';
+import { disableButton } from './validate.js';
+import { validationConfig } from './validate.js';
+import { resetErrors } from './validate.js';
 
 // функции открытия, закрытия попапов
 
@@ -42,17 +45,6 @@ function handleClickOnOverlay(evt) {
   };
 };
 
-// constant ошибки при вводе данных popups
-
-const popupErrors = document.querySelectorAll('.popup__error');
-
-// функция сброса ERRORS модального окна PROFILE
-
-const handlePopupProfileErorrs = () => {
-  popupErrors.forEach((error) => error.textContent = '');
-  popupProfileNameInput.classList.remove('popup__input-text_type_error');
-  popupProfileJobInput.classList.remove('popup__input-text_type_error');
-}
 
 // constants попап, формы profile
 
@@ -65,20 +57,15 @@ const nameProfile = document.querySelector('.profile__name');
 const jobProfile = document.querySelector('.profile__job');
 const popupProfileSubmitButton = popupProfileElement.querySelector('.popup__submit-btn_type_profile');
 
-// функция сброса submitButton модального окна PROFILE
-
-const handleProfileButtonState = () => {
-  popupProfileSubmitButton.classList.add('popup__submit-btn_disabled');
-  popupProfileSubmitButton.disabled = true;
-};
-
 // функция открытия, попап profile
 
 function openProfilePopup() {
   popupProfileNameInput.value = nameProfile.textContent;
   popupProfileJobInput.value = jobProfile.textContent;
-  handleProfileButtonState();
-  handlePopupProfileErorrs();
+  // функция сброса submitButton модального окна PROFILE
+  disableButton(popupProfileSubmitButton, validationConfig);
+  // функция сброса ERRORS модального окна PROFILE
+  resetErrors(popupProfileEditForm, validationConfig);
   openPopup(popupProfileElement);
 }
 
@@ -104,30 +91,17 @@ const popupPlaceUrlInput = popupPlaceElement.querySelector('.popup__input-text_t
 
 const popupPlaceSubmitButton = document.querySelector('.popup__submit-btn_type_place');
 
-// функция сброса submitButton модального окна PLACE
-
-const handlePlaceButtonState = () => {
-  popupPlaceSubmitButton.classList.add('popup__submit-btn_disabled');
-  popupPlaceSubmitButton.disabled = true;
-};
-
-// функция сброса ERRORS модального окна PROFILE
-
-const handlePopupPlaceErorrs = () => {
-  popupErrors.forEach((error) => error.textContent = '');
-  popupPlaceTitleInput.classList.remove('popup__input-text_type_error');
-  popupPlaceUrlInput.classList.remove('popup__input-text_type_error');
-}
-
 // функция открытия, popup-place
 
 function openPlacePopup() {
   popupPlaceTitleInput.value = '';
   popupPlaceUrlInput.value = '';
-  handlePlaceButtonState();
-  handlePopupPlaceErorrs();
+  // функция сброса submitButton модального окна PLACE
+  disableButton(popupPlaceSubmitButton, validationConfig);
+  // функция сброса ERRORS модального окна PLACE
+  resetErrors(popupPlaceForm, validationConfig);
   openPopup(popupPlaceElement);
-}
+};
 
 popupPlaceOpenButton.addEventListener('click', openPlacePopup);
 
