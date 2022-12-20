@@ -6,6 +6,9 @@ export class FormValidator {
     this._inputErrorClass = config.inputErrorClass
     this._errorClass = config.errorClass
     this._formElement = formElement
+
+    this._inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
+    this._buttonElement = this._formElement.querySelector(this._submitButtonSelector);
   }
 
   // Показать ошибку
@@ -19,15 +22,16 @@ export class FormValidator {
   // Спрятать ошибку
   _hideInputError(inputElement) {
     const errorElement = this._formElement.querySelector(`.popup__error_${inputElement.name}`);
+
     inputElement.classList.remove(this._inputErrorClass)
     errorElement.classList.remove(this._errorClass)
     errorElement.textContent = ''
   }
 
-  // сбросить ошибки
-  _resetErrors() {
-    const inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
-    inputList.forEach((inputElement) => {
+  // сделать ресет ошибок и кнопки submit
+  resetValidation() {
+    this._toggleButtonState()
+    this._inputList.forEach((inputElement) => {
       this._hideInputError(inputElement);
     }
     )
@@ -42,36 +46,34 @@ export class FormValidator {
   }
 
   //Проверка одного поля на валидность
-  _hasInvalidInput(inputList) {
-    return inputList.some((inputElement) => {
+  _hasInvalidInput() {
+    return this._inputList.some((inputElement) => {
       return !inputElement.validity.valid
     })
   }
 
   //Блокировка кнопки SUBMIT
-  _toggleButtonState(inputList, buttonElement) {
-    if (this._hasInvalidInput(inputList)) {
-      this._disableButton(buttonElement)
+  _toggleButtonState() {
+    if (this._hasInvalidInput()) {
+      this._disableButton()
     } else {
-      buttonElement.classList.remove(this._inactiveButtonClass)
-      buttonElement.disabled = false
+      this._buttonElement.classList.remove(this._inactiveButtonClass)
+      this._buttonElement.disabled = false
     }
   }
 
-  _disableButton(buttonElement) {
-    buttonElement.disabled = true;
-    buttonElement.classList.add(this._inactiveButtonClass);
+  _disableButton() {
+    this._buttonElement.disabled = true;
+    this._buttonElement.classList.add(this._inactiveButtonClass);
   };
 
   // Слушатели событий
   _setEventListeners() {
-    const inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
-    const buttonElement = this._formElement.querySelector(this._submitButtonSelector);
-    this._toggleButtonState(inputList, buttonElement);
-    inputList.forEach((inputElement) => {
+    this._toggleButtonState();
+    this._inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
         this._checkInputValidity(inputElement)
-        this._toggleButtonState(inputList, buttonElement);
+        this._toggleButtonState();
       })
     })
   }

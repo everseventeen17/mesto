@@ -88,16 +88,13 @@ const popupProfileNameInput = popupProfileElement.querySelector('.popup__input-t
 const popupProfileJobInput = popupProfileElement.querySelector('.popup__input-text_type_job');
 const nameProfile = document.querySelector('.profile__name');
 const jobProfile = document.querySelector('.profile__job');
-const popupProfileSubmitButton = popupProfileElement.querySelector('.popup__submit-btn_type_profile');
 
 // функция открытия, попап profile
 function openProfilePopup() {
   popupProfileNameInput.value = nameProfile.textContent;
   popupProfileJobInput.value = jobProfile.textContent;
-  // функция сброса submitButton модального окна PROFILE
-  popupProfileFormValidator._disableButton(popupProfileSubmitButton);
-  // функция сброса ERRORS модального окна PROFILE
-  popupProfileFormValidator._resetErrors();
+  // функция ресета ERRORS и кнопки модального окна PROFILE
+  popupProfileFormValidator.resetValidation();
   openPopup(popupProfileElement);
 }
 
@@ -118,16 +115,13 @@ const popupPlaceOpenButton = document.querySelector('.profile__add-button');
 const popupPlaceForm = popupPlaceElement.querySelector('.popup__form_type_place');
 const popupPlaceTitleInput = popupPlaceElement.querySelector('.popup__input-text_type_title');
 const popupPlaceUrlInput = popupPlaceElement.querySelector('.popup__input-text_type_url');
-const popupPlaceSubmitButton = document.querySelector('.popup__submit-btn_type_place');
 
 // функция открытия, popup-place
 function openPlacePopup() {
   popupPlaceTitleInput.value = '';
   popupPlaceUrlInput.value = '';
-  // функция сброса submitButton модального окна PLACE
-  popupPlaceFormValidator._disableButton(popupPlaceSubmitButton);
-  // функция сброса ERRORS модального окна PLACE
-  popupPlaceFormValidator._resetErrors();
+  // функция ресета ERRORS и кнопки модального окна PLACE
+  popupPlaceFormValidator.resetValidation();
   openPopup(popupPlaceElement);
 };
 
@@ -157,11 +151,16 @@ popupProfileFormValidator.enableValidation();
 // Дом узлы
 const elementContainer = document.querySelector('.elements');
 
-// обход массива elementList, рендер карточек по умолчанию
-elementList.forEach((element) => {
+// функция создания карточек
+function createCard(element) {
   const card = new Card(element, '#element-template', openImagePopup);
   const newCard = card.renderCard();
   elementContainer.prepend(newCard);
+}
+
+// обход массива elementList, рендер карточек по умолчанию
+elementList.forEach((element) => {
+  createCard(element)
 });
 
 //функция создания новой карточки пользователем
@@ -173,9 +172,7 @@ function addNewCard(evt) {
     link: popupPlaceUrlInput.value,
   };
   //создание новой карточки
-  const card = new Card(receivedUserData, '#element-template', openImagePopup);
-  const newCard = card.renderCard();
-  elementContainer.prepend(newCard);
+  createCard(receivedUserData)
   // очистка полей, закрытие попапа PLACE
   popupPlaceTitleInput.value = '';
   popupPlaceUrlInput.value = '';
