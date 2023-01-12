@@ -1,6 +1,6 @@
 export class Popup {
   constructor(popupSelector) {
-    this._popup = popupSelector; //Принимает в конструктор единственный параметр — селектор попапа.
+    this._popup = document.querySelector(popupSelector); //Принимает в конструктор единственный параметр — селектор попапа.
   }
 
   // публичный метод открыть popup

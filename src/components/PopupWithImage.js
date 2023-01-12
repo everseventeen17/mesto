@@ -9,9 +9,9 @@ export class PopupWithImage extends Popup {
 
   // перезаписывать родительский метод open, вставлять в попап картинку и подписью к картинке.
   open(text, url) {
-    super.open(); // наследует от Popup
     this._popupText.textContent = text;
     this._popupImage.src = url;
     this._popupImage.alt = text;
+    super.open(); // наследует от Popup
   };
 }

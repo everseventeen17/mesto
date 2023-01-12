@@ -9,51 +9,20 @@ import { PopupWithImage } from '../components/PopupWithImage.js';
 import { PopupWithForm } from '../components/PopupWithForm.js';
 import { UserInfo } from '../components/UserInfo.js';
 
-// классы и селекторы элементов форм
-export const validationConfig = {
-  inputSelector: '.popup__input-text',
-  submitButtonSelector: '.popup__submit-btn',
-  inactiveButtonClass: 'popup__submit-btn_disabled',
-  inputErrorClass: 'popup__input-text_type_error',
-  errorClass: 'popup__error_visible'
-};
-
-// Массив карточек по умолчанию
-const elementList = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
-
+// Импорт constants
+import {
+  popupProfileOpenButton, popupProfileForm,
+  popupProfileNameInput, popupProfileJobInput,
+  nameProfile, jobProfile, popupPlaceOpenButton,
+  popupPlaceForm, elementContainer,
+  validationConfig, elementList
+} from '../components/utils/constants.js';
 
 
 // =======================MODAL WINDOW PHOTO========================
 // constants PHOTO modal window
-const popupPhotoElement = document.querySelector('.popup_type_photo');
 
-const popupPhoto = new PopupWithImage(popupPhotoElement);
+const popupPhoto = new PopupWithImage('.popup_type_photo');
 popupPhoto.setEventListeners();
 // открыть popup PHOTO modal window
 function openPhotoPopup(name, image) {
@@ -61,18 +30,7 @@ function openPhotoPopup(name, image) {
 };
 
 
-
-
 // ========================MODAL WINDOW PROFILE========================
-// constants PROFILE modal window
-const popupProfileOpenButton = document.querySelector('.profile__edit-button'); // кнопка открыть модальное окно PROFILE
-const popupProfileElement = document.querySelector('.popup_type_profile'); // модальное окно PROFILE
-const popupProfileForm = popupProfileElement.querySelector('.popup__form_type_profile'); // форма модального окна PROFILE
-const popupProfileNameInput = popupProfileElement.querySelector('.popup__input-text_type_name'); // инпут имени модального окна PROFILE
-const popupProfileJobInput = popupProfileElement.querySelector('.popup__input-text_type_job'); // инпут о себе модального окна PROFILE
-// constants профиля, которые отображаются на странице
-const nameProfile = document.querySelector('.profile__name');
-const jobProfile = document.querySelector('.profile__job');
 
 // Данные PROFILE
 const userInfo = new UserInfo({
@@ -80,7 +38,7 @@ const userInfo = new UserInfo({
   job: jobProfile,
 });
 
-const popupProfile = new PopupWithForm(popupProfileElement, popupProfileHanler);
+const popupProfile = new PopupWithForm('.popup_type_profile', handleEditProfileData);
 popupProfile.setEventListeners();
 
 // объект валидации формы PROFILE
@@ -102,7 +60,7 @@ function handleInputTextProfile() {
 };
 
 // функция редактирования профиля
-function popupProfileHanler(profileData) {
+function handleEditProfileData(profileData) {
   userInfo.setUserInfo({
     name: profileData.profileName,
     job: profileData.profileUserAbout
@@ -111,19 +69,12 @@ function popupProfileHanler(profileData) {
 };
 
 
-
-
 // ========================MODAL WINDOW PLACE========================
-// constants PLACE modal window
-const popupPlaceElement = document.querySelector('.popup_type_place'); // модальное окно PLACE
-const popupPlaceOpenButton = document.querySelector('.profile__add-button'); // кнопка открыть модальное окно PLACE
-const popupPlaceForm = popupPlaceElement.querySelector('.popup__form_type_place'); // форма модального окна PLACE
-
-const popupPlace = new PopupWithForm(popupPlaceElement, popupPlaceHandler);
+const popupPlace = new PopupWithForm('.popup_type_place', handleEditPlaceData);
 popupPlace.setEventListeners();
 
 // функция добавления пользовательской карточки
-function popupPlaceHandler(placeData) {
+function handleEditPlaceData(placeData) {
   cardsDefault.addItem(createCard({
     name: placeData.placeName,
     link: placeData.placeUrl
@@ -142,11 +93,7 @@ popupPlaceOpenButton.addEventListener('click', function () {
 });
 
 
-
-
 //========================CARD RENDER========================
-// Дом узлы
-const elementContainer = document.querySelector('.elements');
 
 // функция создания карточек
 const createCard = function (element) {
