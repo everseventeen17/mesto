@@ -16,7 +16,7 @@ import {
   nameProfile, jobProfile, popupPlaceOpenButton,
   popupPlaceForm, elementContainer,
   validationConfig, elementList
-} from '../components/utils/constants.js';
+} from '../utils/constants.js';
 
 
 // =======================MODAL WINDOW PHOTO========================
