@@ -9,6 +9,14 @@ export const popupProfileJobInput = popupProfileElement.querySelector('.popup__i
 export const nameProfile = document.querySelector('.profile__name'); // имя пользователя
 export const jobProfile = document.querySelector('.profile__job'); // информация о себе
 
+// ========================MODAL WINDOW AVATAR========================
+const popupAvatarElement = document.querySelector('.popup_type_avatar');
+export const popupAvatarOpenButton = document.querySelector('.profile__avatar-button');
+export const popupAvatarForm = popupAvatarElement.querySelector('.popup__form_type_avatar');
+export const popupAvatarUrlInput = popupAvatarElement.querySelector('.popup__input-text_type_url');
+// constants аватара, которые отображаются на странице
+export const avatarProfile = document.querySelector('.profile__avatar');
+
 
 // ========================MODAL WINDOW PLACE========================
 // constants PLACE modal window
@@ -29,31 +37,11 @@ export const validationConfig = {
   inputErrorClass: 'popup__input-text_type_error',
   errorClass: 'popup__error_visible'
 };
-
-// Массив карточек по умолчанию
-export const elementList = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+// объект данных API
+export const apiData = {
+  link: 'https://nomoreparties.co/v1/cohort-59/',
+  headers: {
+    authorization: 'aa5af5a1-1216-4f7a-ab40-da79c3d78455',
+    'Content-Type': 'application/json'
   }
-];
+}

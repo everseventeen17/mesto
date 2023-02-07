@@ -14,13 +14,14 @@
   <main class="main">
     <section class="profile">
       <div class="profile__inner">
-        <img src="<%=require('./images/header/avatar.jpg')%>" alt="Аватар" class="profile__avatar">
+        <img src="" alt="Аватар" class="profile__avatar">
+        <button type="button" aria-label="Редактировать аватар" class="profile__avatar-button"></button>
         <div class="profile__info">
           <div class="profile__name-wrapper">
-            <h1 class="profile__name">Жак-Ив Кусто</h1>
+            <h1 class="profile__name"></h1>
             <button type="button" aria-label="Редактировать профиль" class="profile__edit-button"></button>
           </div>
-          <p class="profile__job">Исследователь океана</p>
+          <p class="profile__job"></p>
         </div>
       </div>
       <button type="button" aria-label="Добавить карточку" class="profile__add-button"></button>
@@ -33,22 +34,38 @@
     <p class="footer__copyright">© 2020 Mesto Russia</p>
   </footer>
 
+  <!-- PROFILE modal window -->
   <div class="popup popup_type_profile">
     <div class="popup__container">
       <button type="button" aria-label="Закрыть" class="popup__close-btn"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
       <form name="profileForm" method="post" class="popup__form popup__form_type_profile" novalidate>
         <input name="profileName" type="text" placeholder="Имя" class="popup__input-text popup__input-text_type_name"
-        required minlength="2" maxlength="40" >
+          required minlength="2" maxlength="40">
         <span class="popup__error popup__error_profileName">11</span>
         <input name="profileUserAbout" type="text" placeholder="О себе"
           class="popup__input-text popup__input-text_type_job" required minlength="2" maxlength="200">
-          <span class="popup__error popup__error_profileUserAbout">1</span>
+        <span class="popup__error popup__error_profileUserAbout">1</span>
         <button type="submit" class="popup__submit-btn popup__submit-btn_type_profile">Сохранить</button>
       </form>
     </div>
   </div>
 
+  <!-- AVATAR modal window -->
+  <div class="popup popup_type_avatar">
+    <div class="popup__container">
+      <button type="button" aria-label="Закрыть" class="popup__close-btn popup__close-btn_type_avatar"></button>
+      <h2 class="popup__title">Обновить аватар</h2>
+      <form name="avatarForm" method="post" class="popup__form popup__form_type_avatar" novalidate>
+        <input name="avatarUrl" type="url" placeholder="Ссылка на картинку"
+          class="popup__input-text popup__input-text_type_url" required>
+        <span class="popup__error popup__error_avatarUrl">1</span>
+        <button type="submit" class="popup__submit-btn popup__submit-btn_type_avatar">Сохранить</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- PLACE modal window -->
   <div class="popup popup_type_place">
     <div class="popup__container">
       <button type="button" aria-label="Закрыть" class="popup__close-btn popup__close-btn_type_place"></button>
@@ -56,15 +73,25 @@
       <form name="placeForm" method="post" class="popup__form popup__form_type_place" novalidate>
         <input name="placeName" type="text" placeholder="Название"
           class="popup__input-text popup__input-text_type_title" required minlength="2" maxlength="30">
-          <span class="popup__error popup__error_placeName">1</span>
+        <span class="popup__error popup__error_placeName">1</span>
         <input name="placeUrl" type="url" placeholder="Ссылка на картинку"
           class="popup__input-text popup__input-text_type_url" required>
-          <span class="popup__error popup__error_placeUrl">1</span>
+        <span class="popup__error popup__error_placeUrl">1</span>
         <button type="submit" class="popup__submit-btn popup__submit-btn_type_place">Создать</button>
       </form>
     </div>
   </div>
 
+  <!-- CONFIRM modal window -->
+  <div class="popup popup_type_confirm">
+    <div class="popup__container popup__container_type_confirm">
+      <button type="button" aria-label="Закрыть" class="popup__close-btn popup__close-btn_type_confirm"></button>
+      <h2 class="popup__title">Вы уверены?</h2>
+      <button type="button" class="popup__submit-btn popup__submit-btn_type_confirm">Да</button>
+    </div>
+  </div>
+
+  <!-- PHOTO modal window -->
   <div class="popup popup_type_photo">
     <div class="popup__container popup__container_type_photo">
       <button type="button" aria-label="Закрыть" class="popup__close-btn popup__close-btn_type_photo"></button>
@@ -73,13 +100,17 @@
     </div>
   </div>
 
+  <!-- TEMPLATE -->
   <template id="element-template" class="template">
     <li class="element">
       <button type="button" aria-label="Удалить" class="element__delete-button"></button>
       <img src="./images/main/element/1.jpg" alt="Картинка" class="element__img">
       <div class="element__rectangle">
         <h2 class="element__title"></h2>
-        <button type="button" aria-label="Оценить" class="element__btn-like"></button>
+        <div class="element__like-wrapper">
+          <button type="button" aria-label="Оценить" class="element__btn-like"></button>
+          <p class="element__like-counter"></p>
+        </div>
       </div>
     </li>
   </template>

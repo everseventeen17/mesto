@@ -6,16 +6,20 @@ import { FormValidator } from '../components/FormValidator.js';
 import { Card } from '../components/Card.js';
 import { Section } from '../components/Section.js';
 import { PopupWithImage } from '../components/PopupWithImage.js';
+import { PopupConfirm } from '../components/PopupConfirm.js';
 import { PopupWithForm } from '../components/PopupWithForm.js';
 import { UserInfo } from '../components/UserInfo.js';
+import { Api } from '../components/Api.js';
 
 // Импорт constants
 import {
   popupProfileOpenButton, popupProfileForm,
   popupProfileNameInput, popupProfileJobInput,
   nameProfile, jobProfile, popupPlaceOpenButton,
-  popupPlaceForm, elementContainer,
-  validationConfig, elementList
+  popupPlaceForm, elementContainer, validationConfig,
+  popupAvatarOpenButton, popupAvatarForm,
+  apiData,
+  avatarProfile,
 } from '../utils/constants.js';
 
 
@@ -36,6 +40,7 @@ function openPhotoPopup(name, image) {
 const userInfo = new UserInfo({
   name: nameProfile,
   job: jobProfile,
+  avatar: avatarProfile,
 });
 
 const popupProfile = new PopupWithForm('.popup_type_profile', handleEditProfileData);
@@ -54,19 +59,60 @@ popupProfileOpenButton.addEventListener('click', function () {
 
 // функция заполнения полей input модального окна PROFILE данными из профиля
 function handleInputTextProfile() {
-  const NewUserInfo = userInfo.getUserInfo();
-  popupProfileNameInput.value = NewUserInfo.name;
-  popupProfileJobInput.value = NewUserInfo.job;
+  const newUserInfo = userInfo.getUserInfo();
+  popupProfileNameInput.value = newUserInfo.name;
+  popupProfileJobInput.value = newUserInfo.job;
 };
 
 // функция редактирования профиля
 function handleEditProfileData(profileData) {
-  userInfo.setUserInfo({
-    name: profileData.profileName,
-    job: profileData.profileUserAbout
-  });
-  popupProfile.close();
+  popupProfile.addSavingDots() // добавляем точки
+  api.patchProfileData(profileData) // редактируем данные профиля на сервере
+    .then((data) => {
+      userInfo.setUserInfo({ // устанавливаем данные профиля в соответствии с серверными
+        name: data.name,
+        job: data.about,
+      })
+
+    })
+    .catch((error) => {
+      console.log(error) // ошибки попадающие в catch
+    })
+    .finally(()=>{
+      popupProfile.removeSavingDots() // убираем точки
+      popupProfile.close(); // закрываем модальное окно PROFILE
+    })
 };
+
+// ========================MODAL WINDOW AVATAR========================
+
+const popupAvatar = new PopupWithForm('.popup_type_avatar', handleProfileAvatar)
+popupAvatar.setEventListeners();
+
+// функция обновления аватара
+function handleProfileAvatar(avatarUrl) {
+  popupAvatar.addSavingDots() // добавляем точки
+  api.patchAvatar(avatarUrl) // обновляем ссылку Аватара на сервере
+    .then((data) => {
+      userInfo.setUserAvatar(data.avatar) // устанавливаем avatar.src в соответствии с сервером
+    })
+    .catch((error) => {
+      console.log(error) // ошибки попадающие в catch
+    })
+    .finally(()=>{
+      popupAvatar.removeSavingDots() // убираем точки
+      popupAvatar.close() // закрываем модальное окно AVATAR
+    })
+}
+
+const popupAvatarFormValidator = new FormValidator(validationConfig, popupAvatarForm)
+popupAvatarFormValidator.enableValidation();
+
+popupAvatarOpenButton.addEventListener('click', function () {
+  popupAvatar.open(); // открыть модальное окно AVATAR
+  popupAvatarFormValidator.resetValidation() // reset формы валидации AVATAR
+})
+
 
 
 // ========================MODAL WINDOW PLACE========================
@@ -75,11 +121,21 @@ popupPlace.setEventListeners();
 
 // функция добавления пользовательской карточки
 function handleEditPlaceData(placeData) {
-  cardsDefault.addItem(createCard({
+  popupPlace.addSavingDots('Создание...')
+  api.postNewCard({
     name: placeData.placeName,
     link: placeData.placeUrl
-  }));
-  popupPlace.close();
+  })
+    .then((data) => {
+      cardsDefault.addItem(createCard(data))
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+    .finally(()=>{
+      popupPlace.removeSavingDots('Создать')
+      popupPlace.close();
+    })
 }
 
 // объект валидации формы PLACE
@@ -93,21 +149,71 @@ popupPlaceOpenButton.addEventListener('click', function () {
 });
 
 
-//========================CARD RENDER========================
 
+//========================= POPUP CONFIRM=============================
+const popupConfirm = new PopupConfirm('.popup_type_confirm', handleDeleteCard)
+popupConfirm.setEventListeners()
+
+function handleDeleteCard(cardToDelete, cardId) {
+
+  api.deleteCard(cardId)
+    .then(() => {
+      cardToDelete.remove();
+      popupConfirm.close()
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
+
+function openConfirmPopup(cardElement, cardId) {
+  popupConfirm.open(cardElement, cardId)
+}
+
+//========================CARD RENDER========================
+let userId // переменная id пользователя
 // функция создания карточек
-const createCard = function (element) {
-  const card = new Card(element, '.template', openPhotoPopup);
+function createCard(cardData) {
+  const card = new Card(cardData, '.template', userId, openPhotoPopup, openConfirmPopup,
+    //  =================addLike==============
+    function handleLike(cardId) {
+      api.putLike(cardId)
+        .then((data) => {
+          card.renderLikes(data)
+        })
+        .catch((error) => console.log(error));
+    },
+    //  =================removeLike==============
+    function removeLike(cardId) {
+      api.deleteLike(cardId)
+        .then((data) => {
+          card.renderLikes(data)
+        })
+    }
+  );
   return card.generateCard();
 }
 
 // обход массива elementList, рендер карточек по умолчанию
 const cardsDefault = new Section({
-  items: elementList,
-  renderer: (element) => {
-    cardsDefault.addItem(createCard(element));
+  renderer: (cardData) => {
+    cardsDefault.addItem(createCard(cardData));
   }
 },
   elementContainer);
 
-cardsDefault.renderItems();
+
+
+//========================API========================
+const api = new Api(apiData)
+
+Promise.all([api.getProfileData(), api.getInitialCards()])
+  .then(([userData, cardData]) => {
+    userId = userData._id
+    cardsDefault.renderItems(cardData) // рендерим карточки с сервера
+    userInfo.setUserAvatar(userData.avatar) // устанавливаем аватар
+    userInfo.setUserInfo({ // устанавливаем данные профиля в соответствии с серверными
+      name: userData.name,
+      job: userData.about,
+    })
+  })

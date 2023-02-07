@@ -6,6 +6,17 @@ export class PopupWithForm extends Popup {
     this._callbackFormSubmit = callbackFormSubmit; //callback сабмита формы
     this._popupForm = this._popup.querySelector('.popup__form'); // форма модального окна
     this._inputList = Array.from(this._popupForm.querySelectorAll('.popup__input-text')); // инпуты модального окна
+    this._submitButton = this._popupForm.querySelector('.popup__submit-btn') // кнопка сабмита формы
+  }
+  // Добавить точки сохранения
+  addSavingDots(text = 'Сохранение...') {
+    this._submitButton.textContent = text
+    this._submitButton.disabled = true
+  }
+  // убрать точки сохранения
+  removeSavingDots(text = 'Сохранить') {
+    this._submitButton.textContent = text;
+    this._submitButton.disabled = false
   }
 
   // приватный метод _getInputValues, который собирает данные всех полей формы.

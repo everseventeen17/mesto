@@ -1,13 +1,13 @@
 export class Section {
-  constructor({ items, renderer }, containerSelector) {
-    this._items = items; // массив данных, которые нужно добавить на страницу при инициализации класса.
+  constructor({ renderer }, containerSelector) {
     this._renderer = renderer; //функция, которая отвечает за создание и отрисовку данных на странице.
     this._containerSelector = containerSelector; //селектор контейнера, в который нужно добавлять созданные элементы.
   }
 
-  // публичный метод, который отвечает за отрисовку всех элементов.
-  renderItems() {
-    this._items.forEach((item) => {
+  // публичный метод, принимает массив карточек с сервера, отвечает за отрисовку всех элементов.
+  renderItems(items) {
+    items.reverse() // реверсируем массив для коректного отображения карточек
+    items.forEach((item) => {
       this._renderer(item)
     });
   };

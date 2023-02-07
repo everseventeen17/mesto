@@ -1,5 +1,5 @@
 .element__btn-like {
-  padding: 22px;
+  padding: 22px 21px 10px 21px;
   background-color: transparent;
   border: none;
   background-image: url('../../../images/main/element/__rectangle/btn-like.svg');
