@@ -73,14 +73,13 @@ function handleEditProfileData(profileData) {
         name: data.name,
         job: data.about,
       })
-
+      popupProfile.close(); // закрываем модальное окно PROFILE
     })
     .catch((error) => {
       console.log(error) // ошибки попадающие в catch
     })
-    .finally(()=>{
+    .finally(() => {
       popupProfile.removeSavingDots() // убираем точки
-      popupProfile.close(); // закрываем модальное окно PROFILE
     })
 };
 
@@ -95,13 +94,13 @@ function handleProfileAvatar(avatarUrl) {
   api.patchAvatar(avatarUrl) // обновляем ссылку Аватара на сервере
     .then((data) => {
       userInfo.setUserAvatar(data.avatar) // устанавливаем avatar.src в соответствии с сервером
+      popupAvatar.close() // закрываем модальное окно AVATAR
     })
     .catch((error) => {
       console.log(error) // ошибки попадающие в catch
     })
-    .finally(()=>{
+    .finally(() => {
       popupAvatar.removeSavingDots() // убираем точки
-      popupAvatar.close() // закрываем модальное окно AVATAR
     })
 }
 
@@ -127,14 +126,14 @@ function handleEditPlaceData(placeData) {
     link: placeData.placeUrl
   })
     .then((data) => {
-      cardsDefault.addItem(createCard(data))
+        cardsDefault.addItem(createCard(data))
+        popupPlace.close();
     })
     .catch((error) => {
       console.log(error)
     })
-    .finally(()=>{
+    .finally(() => {
       popupPlace.removeSavingDots('Создать')
-      popupPlace.close();
     })
 }
 
@@ -155,7 +154,6 @@ const popupConfirm = new PopupConfirm('.popup_type_confirm', handleDeleteCard)
 popupConfirm.setEventListeners()
 
 function handleDeleteCard(cardToDelete, cardId) {
-
   api.deleteCard(cardId)
     .then(() => {
       cardToDelete.remove();
@@ -163,6 +161,7 @@ function handleDeleteCard(cardToDelete, cardId) {
     })
     .catch((error) => {
       console.log(error)
+      
     })
 }
 
